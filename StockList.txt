@@ -1,0 +1,6 @@
+Name	Quantity	Price
+Bunnies	35		14.5
+Doggies	15		16.5
+Funny	48		12.5
+Sharky	15		120
+Luffy	35		10.5
