@@ -5,19 +5,47 @@
 #include <ctime>
 using namespace std;
 /***************************************************Structures****************************************************************/
-//Struture for Toys
 struct Toys{
   string name;
   int quantity;
   double price;
 };
 
-//Structure for Billing
 struct Billing{
   string name;
   int quantity;
   double price;
 };
+/*****************************************************************************************************************************/
+/*************************************************Input Validation************************************************************/
+int inputValid(bool t, int num, int type){
+    while(true){
+        if(t == true){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            if(type == 1 ){
+                cout<<"\t\t\t\t\t"<<"Please enter the available option : ";
+                cin>>num;
+            }else if(type ==2){
+                cout<<"\t\t\t\t"<<"Please enter a valid no. : ";
+                cin>>num;
+            }else if(type ==3 ){
+                cout<<"\t\t\t\t\t"<<"Please enter a valid discount % (0-100) : ";
+                cin>>num;
+            }else if(type ==4 ){
+                cout<<"\t\t\t\t\t"<<"Please enter a valid amount of payment : ";
+                cin>>num;
+            }else{
+                cout<<"\t\t\t\t"<<"Please enter a valid input : ";
+                cin>>num;
+            }   
+        }
+        if(!cin.fail()){
+            break;
+        }
+    }
+    return num;
+}
 /*****************************************************************************************************************************/
 /*************************************************Add items and bills*********************************************************/
 //Add new item to the store
@@ -28,32 +56,12 @@ Toys* addItem(Toys t[], int size){
   cout<<"\t\t\t\t\t"<<"Quantity: ";
   cin>> t[size].quantity;
   // Input validation
-  while(true){
-        if(cin.fail()){
-          cin.clear();
-          cin.ignore(numeric_limits<streamsize>::max(),'\n');
-          cout<<"\t\t\t\t\t"<<"Please enter a valid quantity : ";
-          cin>>t[size].quantity;
-        }
-        if(!cin.fail()){
-          break;
-        }
-      }
+  t[size].quantity = inputValid(cin.fail(), t[size].quantity, 5 );
+
   cout<<"\t\t\t\t\t"<<"Price: ";
   cin>> t[size].price;
   // Input validation
-  while(true){
-        if(cin.fail()){
-          cin.clear();
-          cin.ignore(numeric_limits<streamsize>::max(),'\n');
-          cout<<"\t\t\t\t\t"<<"Please enter a valid price : ";
-          cin>>t[size].price;
-        }
-        if(!cin.fail()){
-          break;
-        }
-      }
-
+  t[size].price = inputValid(cin.fail(), t[size].price, 5 );
   return t;
 }
 
@@ -140,15 +148,6 @@ Billing* deleteBill(Billing b[],int num, int size){
   return b;
 }
 
-// Clear the billing statement after the purchase is made
-Billing* clear(Billing b[], int size){
-  for(int i = 0 ; i < size ; i++){
-    b[i].name = "null";
-    b[i].quantity = 0;
-    b[i].price = 0;
-  }
-  return b;
-}
 /****************************************************************************************************************************/
 /*************************************Print and Display transaction history**************************************************/
 // Display current transaction and write the billing statement to the TransactionHistory file
@@ -274,35 +273,6 @@ int getTransactionNumber(){
   return num;
 }
 
-// Input Validation
-int inputValid(bool t, int num, int type){
-    while(true){
-        if(t == true){
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            if(type == 1 ){
-                cout<<"\t\t\t\t\t"<<"Please enter the available option : ";
-                cin>>num;
-            }else if(type ==2){
-                cout<<"\t\t\t\t"<<"Please enter a valid no. : ";
-                cin>>num;
-            }else if(type ==3 ){
-                cout<<"\t\t\t\t\t"<<"Please enter a valid discount % (0-100) : ";
-                cin>>num;
-            }else if(type ==4 ){
-                cout<<"\t\t\t\t\t"<<"Please enter a valid amount of payment : ";
-                cin>>num;
-            }else{
-                cout<<"\t\t\t\t"<<"Please enter a valid input : ";
-                cin>>num;
-            }   
-        }
-        if(!cin.fail()){
-            break;
-        }
-    }
-    return num;
-}
 /****************************************************************************************************************************/
 /*******************************************Billing Loop*********************************************************************/
 void billingLoop(Toys t[], int number, int size){
@@ -393,7 +363,6 @@ int input;
                 transaction++;
 
                 //Clear the billing statement
-                ptrB = clear(ptrB, sizeB);
                 sizeB = sizeB - sizeB;
                 input = 4;
                 break;              
