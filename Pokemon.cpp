@@ -11,9 +11,16 @@
 #include <sstream>
 #include <cstring>
 #include <cctype>
+#include <windows.h>
 
 using namespace std;
-
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+void printColor(string str, int k)
+{
+    SetConsoleTextAttribute(console, k);
+    cout << str;
+    SetConsoleTextAttribute(console, 15);
+}
 /***************************************************** Structs *****************************************************/
 struct Pokemon
 {
@@ -107,17 +114,24 @@ struct Hunter
 
         string line = "----------------------------------------------------------------------------------------------";
         string asterisk = "**********************************************************************************************";
+
+        SetConsoleTextAttribute(console, 14);
         printf("\t\t\t%s \n", asterisk.c_str());                   // ************
         printf("\t\t\t%39d %9s %3s %-40d\n", i, "Hunter", " ", i); // 1   Hunter   1
         printf("\t\t\t%s \n", asterisk.c_str());                   // ************
+        SetConsoleTextAttribute(console, 15);
+
         printf("\t\t\t%5s %-12s:     %-25s\n", " ", "First Name", firstName.c_str());
         printf("\t\t\t%5s %-12s:     %-25s\n", " ", "Last Name", lastName.c_str());
         printf("\t\t\t%5s %-12s:     %-25d\n", " ", "Level", level);
         printf("\t\t\t%5s %-12s:     %-25s\n", " ", "Gender", gender.c_str());
         printf("\t\t\t%5s %-12s:     %-25s\n\n", " ", "Team Type", teamType.c_str());
 
+        SetConsoleTextAttribute(console, 14);
         printf("\t\t\t%-39s %10s %3s %-40s\n", "**************************************", "Pokemon", " ", "***************************************");
         printf("\t\t\t%5s %-15s %-15s %-10s %-20s %-15s %-15s\n", " ", "Name", "Type", "CP", "Date Captured", "Height", "Weight");
+        SetConsoleTextAttribute(console, 15);
+
         int k = 0;
         for (auto &p : pokemon)
         {
@@ -126,8 +140,11 @@ struct Hunter
         }
         printf("\n"); //
 
+        SetConsoleTextAttribute(console, 14);
         printf("\t\t\t%-39s %9s %4s %-40s\n", "**************************************", "Stops", " ", "***************************************");
         printf("\t\t\t%5s %-15s %-15s %-10s \n", " ", "Date", "Time", "Item");
+        SetConsoleTextAttribute(console, 15);
+
         k = 0;
         for (auto &ps : pStop)
         {
@@ -136,8 +153,11 @@ struct Hunter
         }
         printf("\n"); //
 
+        SetConsoleTextAttribute(console, 14);
         printf("\t\t\t%-39s %9s %4s %-40s\n", "**************************************", "Raids", " ", "***************************************");
         printf("\t\t\t%5s %-15s %-15s %-10s \n", " ", "Date", "Time", "Venue");
+        SetConsoleTextAttribute(console, 15);
+
         k = 0;
         for (auto &pr : pRaid)
         {
@@ -146,12 +166,14 @@ struct Hunter
         }
         printf("\n"); //
 
+        SetConsoleTextAttribute(console, 14);
         printf("\t\t\t%s\n\n", asterisk.c_str()); // ************
+        SetConsoleTextAttribute(console, 15);
     }
 
     void display(int i)
     {
-        printf("%-5d %-15s %-15s %-10d %-20s %-15s\n", i, firstName.c_str(), lastName.c_str(), level, gender.c_str(), teamType.c_str());
+        printf("\t\t\t%-5d %-15s %-15s %-10d %-20s %-15s\n", i, firstName.c_str(), lastName.c_str(), level, gender.c_str(), teamType.c_str());
     }
 };
 
@@ -227,7 +249,7 @@ void dateValid(string &date)
 {
     struct tm tm;
     memset(&tm, 0, sizeof(tm));
-    while (1)
+    while (true)
     {
         // Read the date and assign the values to tm;
         sscanf(date.c_str(), "%d-%d-%d", &tm.tm_mday, &tm.tm_mon, &tm.tm_year);
@@ -241,7 +263,8 @@ void dateValid(string &date)
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Error ! Invalid date. Please enter a valid date: ";
+            printColor("Error !", 12);
+            cout << " Invalid date. Please enter a valid date: ";
             cin >> date;
         }
         else
@@ -259,7 +282,7 @@ void timeValid(string &time)
 {
     struct tm tm;
     memset(&tm, 0, sizeof(tm));
-    while (1)
+    while (true)
     {
         unsigned tmp_hour, tmp_mins;
         sscanf(time.c_str(), "%d:%d", &tmp_hour, &tmp_mins);
@@ -278,7 +301,8 @@ void timeValid(string &time)
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Error ! Invalid time. Please enter a valid time: ";
+            printColor("Error !", 12);
+            cout << " Invalid time. Please enter a valid time: ";
             cin >> time;
         }
         else
@@ -303,19 +327,22 @@ int intValid(bool t, int num, int type)
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (type == 1)
             {
-                cout << "Error ! Invalid option. "
+                printColor("Error !", 12);
+                cout << " Invalid option. "
                      << "Please enter the available option : ";
                 cin >> num;
             }
             else if (type == 2)
             {
-                cout << "Error ! Invalid CP. "
+                printColor("Error !", 12);
+                cout << " Invalid CP. "
                      << "Please enter a valid CP : ";
                 cin >> num;
             }
             else if (type == 3)
             {
-                cout << "Error ! Invalid level. "
+                printColor("Error !", 12);
+                cout << " Invalid level. "
                      << "Please enter a valid Level : ";
                 cin >> num;
             }
@@ -343,19 +370,21 @@ float floatValid(bool t, float num, int type)
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (type == 1)
             {
-                cout << "Error ! Invalid height. "
+                printColor("Error !", 12);
+                cout << " Invalid height. "
                      << "Please enter a valid Height : ";
                 cin >> num;
             }
             else if (type == 2)
             {
-                cout << "Error ! Invalid weight. "
+                printColor("Error !", 12);
+                cout << " Invalid weight. "
                      << "Please enter a valid Weight : ";
                 cin >> num;
             }
             else
             {
-                cout << "\t\t\t\t"
+                cout << ""
                      << "Please enter a valid float : ";
                 cin >> num;
             }
@@ -383,8 +412,14 @@ void pokemonTypeValid(string &pokemonType)
         }
         else
         {
-            cout << "\nError ! Invalid Pokemon Type.\n";
-            printf("%-34s: -%-10s  -%-10s  -%-10s  -%-10s\n%-36s-%-10s  -%-10s  -%-10s  -%-10s\n%-36s-%-10s  -%-10s  -%-10s  -%-10s\n", "Available options for Pokemon Type", "Normal", "Ground", "Fire", "Fighting", " ", "Water", "Grass", "Rock", "Electric", " ", "Bug", "Physic", "Poison", "Dragon");
+            printColor("\nError !", 12);
+            cout << " Invalid Pokemon Type.\n";
+
+            printf("%-34s: ", "Available options for Pokemon Type");
+            SetConsoleTextAttribute(console, 9);
+            printf("-%-10s  -%-10s  -%-10s  -%-10s\n%-36s-%-10s  -%-10s  -%-10s  -%-10s\n%-36s-%-10s  -%-10s  -%-10s  -%-10s\n", "Normal", "Ground", "Fire", "Fighting", " ", "Water", "Grass", "Rock", "Electric", " ", "Bug", "Physic", "Poison", "Dragon");
+            SetConsoleTextAttribute(console, 15);
+
             cout << "Please enter one of the above options: ";
             cin >> type;
             transform(type.begin(), type.end(), type.begin(), ::tolower);
@@ -407,8 +442,14 @@ void genderValid(string &gender)
         }
         else
         {
-            cout << "\nError ! Gender not recognized.\n";
-            printf("%-29s: -%-8s-%-10s-%-10s\n", "Available options for Gender", "Male", "Female", "Agender");
+            printColor("\nError !", 12);
+            cout << " Gender not recognized.\n";
+
+            printf("%-29s: ", "Available options for Gender");
+            SetConsoleTextAttribute(console, 9);
+            printf("-%-8s-%-10s-%-10s\n", "Male", "Female", "Agender");
+            SetConsoleTextAttribute(console, 15);
+
             cout << "Please enter one of the above options: ";
             cin >> type;
             transform(type.begin(), type.end(), type.begin(), ::tolower);
@@ -431,11 +472,35 @@ void teamTypeValid(string &teamType)
         }
         else
         {
-            cout << "\nError ! Invalid Team Type.\n";
-            printf("%-32s: -%-9s-%-10s -%-10s\n", "Available options for Team Type", "Mystic", "Instinct", "None");
+            printColor("\nError !", 12);
+            cout << " Invalid Team Type.\n";
+
+            printf("%-32s: ", "Available options for Team Type");
+            SetConsoleTextAttribute(console, 9);
+            printf("-%-9s-%-10s -%-10s\n", "Mystic", "Instinct", "None");
+            SetConsoleTextAttribute(console, 15);
+
             cout << "Please enter one of the above options: ";
             cin >> type;
             transform(type.begin(), type.end(), type.begin(), ::tolower);
+        }
+    }
+}
+void emptyValid(string &input)
+{
+
+    while (true)
+    {
+        if (input.empty() || all_of(input.begin(), input.end(), [](char c) { return isspace(c); }))
+        {
+            printColor("\nError !", 12);
+            cout << " Input is empty.\n";
+            cout << "Please enter again : ";
+            getline(cin, input);
+        }
+        else
+        {
+            break;
         }
     }
 }
@@ -574,7 +639,8 @@ void readHunter(vector<Hunter> &hunter)
                 {
                     readFile >> rDate;
                     readFile >> rTime;
-                    readFile >> rVenue;
+                    getline(readFile, data);
+                    rVenue = trim(data);
 
                     Raid raid = Raid(rDate, rTime, rVenue);
                     pRaid.push_back(raid);
@@ -591,11 +657,12 @@ void readHunter(vector<Hunter> &hunter)
     }
     catch (...)
     {
-        cout << "\n\n ! Error !\n";
-        cout << "Unable to read the file either due to the file does not exist or the structure of the file is not the same as the program computed.\n";
-
-        cout << "New file will be created upon saving. \nIf the file is still existed, but can not be read, please make sure you have save the existed file to other directory as to make sure the data is not lost.\n";
-        cout << "Proceeding to Main Menu.";
+        printColor("\n\n ! Error !\n", 12);
+        cout << "Unable to read the file either due to the ";
+        printColor("file does not exist ", 12);
+        cout << "or ";
+        printColor("the structure of the file is not the same as the program computed\n\n", 12);
+        printColor("New file will be created upon saving \n\nProceeding to Main Menu...", 10);
     }
 
     readFile.close();
@@ -663,6 +730,13 @@ void writeHunter(vector<Hunter> hunter)
 }
 void displayHuntersDetails(vector<Hunter> hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
     int i = 0;
     for (auto &h : hunter)
     {
@@ -673,18 +747,26 @@ void displayHuntersDetails(vector<Hunter> hunter)
 }
 void displayHunters(vector<Hunter> hunter)
 {
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
     string line = "----------------------------------------------------------------------------------------------";
-    printf("%s \n", line.c_str());
-    cout << "                                           Hunters                                          " << endl;
-    printf("%s \n", line.c_str());
-    printf("%5s %-15s %-15s %-10s %-20s %-15s\n", " ", "First Name", "Last Name", "Level", "Gender", "Team Type");
-    printf("%s \n", line.c_str());
+
+    printf("\t\t\t%s \n", line.c_str());
+    cout << "\t\t\t                                           Hunters                                          " << endl;
+    printf("\t\t\t%s \n", line.c_str());
+
+    printf("\t\t\t%5s %-15s %-15s %-10s %-20s %-15s\n", " ", "First Name", "Last Name", "Level", "Gender", "Team Type");
+    printf("\t\t\t%s \n", line.c_str());
+
     int i = 0;
     for (auto &h : hunter)
     {
         i++;
+        SetConsoleTextAttribute(console, 6);
+
         h.display(i);
     }
+    SetConsoleTextAttribute(console, 15);
+
     printf("\n");
 }
 void searchHunter(vector<Hunter> &hunter, string searchBy, string input)
@@ -764,6 +846,7 @@ void searchHunter(vector<Hunter> &hunter, string searchBy, string input)
             {
                 cout << "Please enter a valid integer : ";
                 cin >> input;
+                cout << "\n";
                 continue;
             }
         } while (state);
@@ -779,8 +862,10 @@ void searchHunter(vector<Hunter> &hunter, string searchBy, string input)
 
     if (result.empty())
     {
+        SetConsoleTextAttribute(console, 12);
         cout << "No result is found.\n"
              << endl;
+        SetConsoleTextAttribute(console, 15);
     }
     else
     {
@@ -804,7 +889,8 @@ void searchHunter(vector<Hunter> &hunter, string searchBy, string input)
             }
             catch (...)
             {
-                cout << "There is no such selection" << endl;
+                printColor("Error !", 12);
+                cout << " There is no such selection" << endl;
                 continue;
             }
         } while (state);
@@ -833,7 +919,8 @@ int selectHunter(vector<Hunter> hunter)
         }
         catch (...)
         {
-            cout << "There is no such selection" << endl;
+            printColor("\nError !", 12);
+            cout << " There is no such selection" << endl;
             continue;
         }
     } while (state);
@@ -844,18 +931,21 @@ int selectPokemon(vector<Pokemon> pokemon)
 {
 
     string line = "----------------------------------------------------------------------------------------------";
-    printf("%s \n", line.c_str());
-    cout << "                                           POKEMONS                                           " << endl;
-    printf("%s \n", line.c_str());
-    printf("%5s %-15s %-15s %-10s %-20s %-15s %-15s\n", " ", "Name", "Type", "CP", "Date Captured", "Height", "Weight");
-    printf("%s \n", line.c_str());
+    printf("\t\t\t%s \n", line.c_str());
+    cout << "\t\t\t                                           POKEMONS                                           " << endl;
+    printf("\t\t\t%s \n", line.c_str());
+    printf("\t\t\t%5s %-15s %-15s %-10s %-20s %-15s %-15s\n", " ", "Name", "Type", "CP", "Date Captured", "Height", "Weight");
+    printf("\t\t\t%s \n", line.c_str());
 
     int i = 0;
     for (auto &p : pokemon)
     {
         i++;
+        SetConsoleTextAttribute(console, 6);
         p.display(i);
     }
+    cout << "\n";
+    SetConsoleTextAttribute(console, 15);
 
     bool state = true;
     do
@@ -873,7 +963,8 @@ int selectPokemon(vector<Pokemon> pokemon)
         }
         catch (...)
         {
-            cout << "There is no such selection" << endl;
+            printColor("\nError !", 12);
+            cout << " There is no such selection" << endl;
             continue;
         }
     } while (state);
@@ -883,18 +974,21 @@ int selectStop(vector<Pokemon_Stops> pStop)
 {
 
     string line = "----------------------------------------------------------------------------------------------";
-    printf("%s \n", line.c_str());
-    cout << "                                          Stops                                           " << endl;
-    printf("%s \n", line.c_str());
-    printf("%-5s %-15s %-15s %-15s\n", " ", "Date", "Time", "Item");
-    printf("%s \n", line.c_str());
+    printf("\t\t\t%s \n", line.c_str());
+    cout << "\t\t\t                                          Stops                                           " << endl;
+    printf("\t\t\t%s \n", line.c_str());
+    printf("\t\t\t%-5s %-15s %-15s %-15s\n", " ", "Date", "Time", "Item");
+    printf("\t\t\t%s \n", line.c_str());
 
     int i = 0;
     for (auto &ps : pStop)
     {
         i++;
+        SetConsoleTextAttribute(console, 6);
         ps.display(i);
     }
+    cout << "\n";
+    SetConsoleTextAttribute(console, 15);
 
     bool state = true;
     do
@@ -912,7 +1006,8 @@ int selectStop(vector<Pokemon_Stops> pStop)
         }
         catch (...)
         {
-            cout << "There is no such selection" << endl;
+            printColor("\nError !", 12);
+            cout << " There is no such selection" << endl;
             continue;
         }
     } while (state);
@@ -921,18 +1016,21 @@ int selectStop(vector<Pokemon_Stops> pStop)
 int selectRaid(vector<Raid> pRaid)
 {
     string line = "----------------------------------------------------------------------------------------------";
-    printf("%s \n", line.c_str());
+    printf("\t\t\t%s \n", line.c_str());
     cout << "                                          Raids                                           " << endl;
-    printf("%s \n", line.c_str());
-    printf("%-5s %-15s %-15s %-15s\n", " ", "Date", "Time", "Venue");
-    printf("%s \n", line.c_str());
+    printf("\t\t\t%s \n", line.c_str());
+    printf("\t\t\t%-5s %-15s %-15s %-15s\n", " ", "Date", "Time", "Venue");
+    printf("\t\t\t%s \n", line.c_str());
 
     int i = 0;
     for (auto &pr : pRaid)
     {
         i++;
+        SetConsoleTextAttribute(console, 6);
         pr.display(i);
     }
+    cout << "\n";
+    SetConsoleTextAttribute(console, 15);
 
     bool state = true;
     do
@@ -950,7 +1048,8 @@ int selectRaid(vector<Raid> pRaid)
         }
         catch (...)
         {
-            cout << "There is no such selection" << endl;
+            printColor("\nError !", 12);
+            cout << " There is no such selection" << endl;
             continue;
         }
     } while (state);
@@ -960,6 +1059,7 @@ int selectRaid(vector<Raid> pRaid)
 /**************************************************** Add New Entry ***************************************************/
 void addHunter(vector<Hunter> &hunter)
 {
+
     string s;
     string firstName;
     string lastName;
@@ -970,14 +1070,17 @@ void addHunter(vector<Hunter> &hunter)
     vector<Pokemon_Stops> pStop;
     vector<Raid> pRaid;
 
+    SetConsoleTextAttribute(console, 11);
     cout << "--------Filling up the Hunter details--------\n";
+    SetConsoleTextAttribute(console, 15);
     getline(cin, gender);
 
     cout << "First Name: ";
     getline(cin, firstName);
-
+    emptyValid(firstName);
     cout << "Last Name: ";
     getline(cin, lastName);
+    emptyValid(lastName);
 
     cout << "Level: ";
     cin >> level;
@@ -995,7 +1098,10 @@ void addHunter(vector<Hunter> &hunter)
     do
     {
         string input;
+        SetConsoleTextAttribute(console, 14);
         cout << "\n--Adding a Pokemon details for this hunter? (Y/N) : ";
+        SetConsoleTextAttribute(console, 15);
+
         cin >> input;
 
         if (input == "Y" || input == "y")
@@ -1047,9 +1153,9 @@ void addHunter(vector<Hunter> &hunter)
     {
         string input;
         getline(cin, input);
-
+        SetConsoleTextAttribute(console, 14);
         cout << "\n--Adding a Stop details for this hunter? (Y/N) : ";
-
+        SetConsoleTextAttribute(console, 15);
         cin >> input;
 
         if (input == "Y" || input == "y")
@@ -1084,9 +1190,9 @@ void addHunter(vector<Hunter> &hunter)
     {
         string input;
         getline(cin, input);
-
+        SetConsoleTextAttribute(console, 14);
         cout << "\n--Adding a Raid details for this hunter? (Y/N) : ";
-
+        SetConsoleTextAttribute(console, 15);
         cin >> input;
 
         if (input == "Y" || input == "y")
@@ -1104,7 +1210,10 @@ void addHunter(vector<Hunter> &hunter)
             timeValid(time);
 
             cout << "Raid Venue: ";
-            cin >> venue;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getline(cin, venue);
+            emptyValid(venue);
 
             Raid poke = Raid(date, time, venue);
             pRaid.push_back(poke);
@@ -1117,12 +1226,23 @@ void addHunter(vector<Hunter> &hunter)
     } while (state);
 
     Hunter hunt = Hunter(firstName, lastName, level, gender, teamType, pokemon, pStop, pRaid);
+    hunt.sortPokemon();
     hunter.push_back(hunt);
-
     writeHunter(hunter);
+
+    SetConsoleTextAttribute(console, 10);
+    printf("\n* Hunter %s %s has successfully registered into the Journal *\n", firstName.c_str(), lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
 }
 void addPokemonToHunter(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
     int i = selectHunter(hunter);
     Hunter added = hunter.at(i);
 
@@ -1133,7 +1253,10 @@ void addPokemonToHunter(vector<Hunter> &hunter)
     float height;
     float weight;
 
+    SetConsoleTextAttribute(console, 11);
     printf("------ Adding new Pokemon to Hunter %s ------\n", added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
+
     cout << "Pokemon Name: ";
     cin >> name;
     cout << "Pokemon Type: ";
@@ -1158,12 +1281,21 @@ void addPokemonToHunter(vector<Hunter> &hunter)
 
     added = hunter.at(i);
     added.displayDetails(++i);
-    printf("*Added new Pokemon named %s to Hunter %s*\n", poke.name.c_str(), added.lastName.c_str());
-
     writeHunter(hunter);
+
+    SetConsoleTextAttribute(console, 10);
+    printf("\n* Added new Pokemon %s to Hunter %s *\n", poke.name.c_str(), added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
 }
 void addStopToHunter(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
     int i = selectHunter(hunter);
     Hunter added = hunter.at(i);
 
@@ -1171,7 +1303,10 @@ void addStopToHunter(vector<Hunter> &hunter)
     string time;
     string items;
 
+    SetConsoleTextAttribute(console, 11);
     printf("------ Adding new Stop to Hunter %s ------\n", added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
+
     cout << "Date (dd-mm-yyy): ";
     cin >> date;
     dateValid(date);
@@ -1186,12 +1321,21 @@ void addStopToHunter(vector<Hunter> &hunter)
 
     added = hunter.at(i);
     added.displayDetails(++i);
-    printf("*Added new Stop to Hunter %s*\n", added.lastName.c_str());
-
     writeHunter(hunter);
+
+    SetConsoleTextAttribute(console, 10);
+    printf("\n* Added new Stop to Hunter %s *\n", added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
 }
 void addRaidToHunter(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
     int i = selectHunter(hunter);
     Hunter added = hunter.at(i);
 
@@ -1199,7 +1343,10 @@ void addRaidToHunter(vector<Hunter> &hunter)
     string time;
     string venue;
 
+    SetConsoleTextAttribute(console, 11);
     printf("------ Adding new Raid to Hunter %s ------\n", added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
+
     cout << "Date (dd-mm-yyy): ";
     cin >> date;
     dateValid(date);
@@ -1207,38 +1354,63 @@ void addRaidToHunter(vector<Hunter> &hunter)
     cin >> time;
     timeValid(time);
     cout << "Venue: ";
-    cin >> venue;
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, venue);
+    emptyValid(venue);
 
     Raid raid = Raid(date, time, venue);
     hunter.at(i).pRaid.push_back(raid);
 
     added = hunter.at(i);
     added.displayDetails(++i);
-    printf("*Added new Raid at %s to Hunter %s*\n", raid.venue.c_str(), added.lastName.c_str());
-
     writeHunter(hunter);
+
+    SetConsoleTextAttribute(console, 10);
+    printf("\n* Added new Raid at %s to Hunter %s *\n", raid.venue.c_str(), added.lastName.c_str());
+    SetConsoleTextAttribute(console, 15);
 }
 
 /**************************************************** Delete Entry ***************************************************/
 void deleteHunter(vector<Hunter> &hunter)
 {
-    int i = selectHunter(hunter);
-    Hunter deletedHunter = hunter.at(i);
-    hunter.erase(hunter.begin() + i);
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+    }
+    else
+    {
 
-    printf("Hunter %s %s has successfully deleted from the journal.\n", deletedHunter.firstName.c_str(), deletedHunter.lastName.c_str());
+        int i = selectHunter(hunter);
+        Hunter deletedHunter = hunter.at(i);
+        hunter.erase(hunter.begin() + i);
+        writeHunter(hunter);
 
-    writeHunter(hunter);
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Hunter %s %s has successfully deleted from the journal *\n", deletedHunter.firstName.c_str(), deletedHunter.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
+    }
 }
 void deletePokemon(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
     int i = selectHunter(hunter);
     vector<Pokemon> pokemon = hunter.at(i).pokemon;
     Hunter hunt = hunter.at(i);
 
     if (pokemon.empty())
     {
-        printf("Hunter %s does not own any Pokemon yet\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Hunter %s does not own any Pokemon yet *\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
     else
     {
@@ -1247,19 +1419,32 @@ void deletePokemon(vector<Hunter> &hunter)
         pokemon.erase(pokemon.begin() + k);
         hunter.at(i).pokemon = pokemon;
 
-        printf("Pokemon %s has successfully deleted from the Hunter.", deletedPokemon.name.c_str());
         writeHunter(hunter);
+
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Pokemon %s has successfully deleted from the Hunter %s *\n", deletedPokemon.name.c_str(), hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
 }
 void deleteStop(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
+
     int i = selectHunter(hunter);
     vector<Pokemon_Stops> stop = hunter.at(i).pStop;
     Hunter hunt = hunter.at(i);
 
     if (stop.empty())
     {
-        printf("Hunter %s has not been to any Stop yet\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Hunter %s has not been to any Stop yet *\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
     else
     {
@@ -1268,20 +1453,32 @@ void deleteStop(vector<Hunter> &hunter)
         Pokemon_Stops deletedStop = hunter.at(i).pStop.at(k);
         stop.erase(stop.begin() + k);
         hunter.at(i).pStop = stop;
-
-        printf("Stop on %s  at %s has successfully deleted from the Hunter.", deletedStop.date.c_str(), deletedStop.time.c_str());
         writeHunter(hunter);
+
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Stop on %s at %s has successfully deleted from the Hunter %s *\n", deletedStop.date.c_str(), deletedStop.time.c_str(), hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
 }
 void deleteRaid(vector<Hunter> &hunter)
 {
+    if (hunter.empty())
+    {
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* There is no hunter registered yet *\n");
+        SetConsoleTextAttribute(console, 15);
+        return;
+    }
+
     int i = selectHunter(hunter);
     vector<Raid> raid = hunter.at(i).pRaid;
     Hunter hunt = hunter.at(i);
 
     if (raid.empty())
     {
-        printf("Hunter %s has not been to any Raid yet\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Hunter %s has not been to any Raid yet *\n", hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
     else
     {
@@ -1290,9 +1487,11 @@ void deleteRaid(vector<Hunter> &hunter)
         Raid deletedRaid = hunter.at(i).pRaid.at(k);
         raid.erase(raid.begin() + k);
         hunter.at(i).pRaid = raid;
-
-        printf("Raid on %s  at %s has successfully deleted from the Hunter.", deletedRaid.date.c_str(), deletedRaid.venue.c_str());
         writeHunter(hunter);
+
+        SetConsoleTextAttribute(console, 12);
+        printf("\n* Raid on %s at %s has successfully deleted from the Hunter %s *\n", deletedRaid.date.c_str(), deletedRaid.venue.c_str(), hunt.lastName.c_str());
+        SetConsoleTextAttribute(console, 15);
     }
 }
 
@@ -1304,7 +1503,9 @@ void searchHunterLoop(vector<Hunter> hunter)
     string search;
     do
     {
-        cout << "\n--------Search Hunter By--------" << endl;
+        SetConsoleTextAttribute(console, 11);
+        cout << "\n------Search Hunter By------" << endl;
+        SetConsoleTextAttribute(console, 15);
         cout << "1) First Name" << endl;
         cout << "2) Last Name" << endl;
         cout << "3) Level" << endl;
@@ -1372,7 +1573,9 @@ void addNewEntryLoop(vector<Hunter> &hunter)
     int input2 = 0;
     do
     {
+        SetConsoleTextAttribute(console, 11);
         cout << "\n----------Add new entry----------" << endl;
+        SetConsoleTextAttribute(console, 15);
         cout << "1) Register a new Hunter" << endl;
         cout << "2) Add new Pokemon to an existing Hunter" << endl;
         cout << "3) Add new Stop to an existing Hunter" << endl;
@@ -1417,7 +1620,9 @@ void deleteEntryLoop(vector<Hunter> &hunter)
     int input3 = 0;
     do
     {
+        SetConsoleTextAttribute(console, 11);
         cout << "\n----------Delete Entry----------" << endl;
+        SetConsoleTextAttribute(console, 15);
         cout << "1) Delete an existing Hunter" << endl;
         cout << "2) Delete a Pokemon from a Hunter" << endl;
         cout << "3) Delete a Stop from a Hunter" << endl;
@@ -1456,6 +1661,8 @@ void deleteEntryLoop(vector<Hunter> &hunter)
 /**************************************************** MAIN***************************************************/
 int main()
 {
+    // system("Color 0F");
+
     vector<Hunter> hunter;
     readHunter(hunter);
     bool state = true;
@@ -1465,8 +1672,11 @@ int main()
     {
         // system("CLS");
         //Create a list and let user to choose
+        SetConsoleTextAttribute(console, 14);
         cout << "\n\n WELCOME to Pokemon Journal \n\n";
+        SetConsoleTextAttribute(console, 11);
         cout << "---------Main Menu---------" << endl;
+        SetConsoleTextAttribute(console, 15);
         cout << "1) Show all Hunters details" << endl;
         cout << "2) Add new entry" << endl;
         cout << "3) Delete an entry" << endl;
