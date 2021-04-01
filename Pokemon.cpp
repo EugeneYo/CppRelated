@@ -195,18 +195,38 @@ string trim(const string &s)
 }
 
 /**************************************************** Validation ***************************************************/
-bool validateDate(tm *timestruct)
+bool validateDate(tm &timestruct)
 {
     struct tm copy;
-    copy.tm_sec = timestruct->tm_sec;
-    copy.tm_min = timestruct->tm_min;
-    copy.tm_hour = timestruct->tm_hour;
-    copy.tm_mday = timestruct->tm_mday;
-    copy.tm_mon = timestruct->tm_mon;
-    copy.tm_year = timestruct->tm_year;
-    copy.tm_wday = timestruct->tm_wday;
-    copy.tm_yday = timestruct->tm_yday;
-    copy.tm_isdst = timestruct->tm_isdst;
+    copy.tm_sec = timestruct.tm_sec;
+    copy.tm_min = timestruct.tm_min;
+    copy.tm_hour = timestruct.tm_hour;
+    copy.tm_mday = timestruct.tm_mday;
+    copy.tm_mon = timestruct.tm_mon;
+    copy.tm_year = timestruct.tm_year;
+    copy.tm_wday = timestruct.tm_wday;
+    copy.tm_yday = timestruct.tm_yday;
+    copy.tm_isdst = timestruct.tm_isdst;
+
+    // cout << "Copy : " << copy.tm_sec << endl;
+    // cout << "Copy : " << copy.tm_min << endl;
+    // cout << "Copy : " << copy.tm_hour << endl;
+    // cout << "Copy : " << copy.tm_mday << endl;
+    // cout << "Copy : " << copy.tm_mon << endl;
+    // cout << "Copy : " << copy.tm_year << endl;
+    // cout << "Copy : " << copy.tm_wday << endl;
+    // cout << "Copy : " << copy.tm_yday << endl;
+    // cout << "Copy : " << copy.tm_isdst << endl;
+
+    // cout << "Ori : " << timestruct.tm_sec << endl;
+    // cout << "Ori : " << timestruct.tm_min << endl;
+    // cout << "Ori : " << timestruct.tm_hour << endl;
+    // cout << "Ori : " << timestruct.tm_mday << endl;
+    // cout << "Ori : " << timestruct.tm_mon << endl;
+    // cout << "Ori : " << timestruct.tm_year << endl;
+    // cout << "Ori : " << timestruct.tm_wday << endl;
+    // cout << "Ori : " << timestruct.tm_yday << endl;
+    // cout << "Ori : " << timestruct.tm_isdst << endl;
 
     // if time is not correct, res will return -1;
     time_t res = mktime(&copy);
@@ -214,24 +234,24 @@ bool validateDate(tm *timestruct)
     {
         return false;
     }
-    if (copy.tm_mday != timestruct->tm_mday || copy.tm_mon != timestruct->tm_mon || copy.tm_year != timestruct->tm_year)
+    if (copy.tm_mday != timestruct.tm_mday || copy.tm_mon != timestruct.tm_mon || copy.tm_year != timestruct.tm_year)
     {
         return false;
     }
     return true;
 }
-bool validateTime(tm *timestruct)
+bool validateTime(tm &timestruct)
 {
     struct tm copy;
-    copy.tm_sec = timestruct->tm_sec;
-    copy.tm_min = timestruct->tm_min;
-    copy.tm_hour = timestruct->tm_hour;
-    copy.tm_mday = timestruct->tm_mday;
-    copy.tm_mon = timestruct->tm_mon;
-    copy.tm_year = timestruct->tm_year;
-    copy.tm_wday = timestruct->tm_wday;
-    copy.tm_yday = timestruct->tm_yday;
-    copy.tm_isdst = timestruct->tm_isdst;
+    copy.tm_sec = timestruct.tm_sec;
+    copy.tm_min = timestruct.tm_min;
+    copy.tm_hour = timestruct.tm_hour;
+    copy.tm_mday = timestruct.tm_mday;
+    copy.tm_mon = timestruct.tm_mon;
+    copy.tm_year = timestruct.tm_year;
+    copy.tm_wday = timestruct.tm_wday;
+    copy.tm_yday = timestruct.tm_yday;
+    copy.tm_isdst = timestruct.tm_isdst;
 
     // if time is not correct, res will return -1;
     time_t res = mktime(&copy);
@@ -239,7 +259,7 @@ bool validateTime(tm *timestruct)
     {
         return false;
     }
-    if (copy.tm_min != timestruct->tm_min || copy.tm_hour != timestruct->tm_hour)
+    if (copy.tm_min != timestruct.tm_min || copy.tm_hour != timestruct.tm_hour)
     {
         return false;
     }
@@ -256,10 +276,10 @@ void dateValid(string &date)
         --tm.tm_mon;
         tm.tm_year -= 1900;
 
-        struct tm *check;
-        check = &tm;
+        // struct tm *check;
+        // check = &tm;
 
-        if (!validateDate(check))
+        if (!validateDate(tm))
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -294,10 +314,10 @@ void timeValid(string &time)
         tm.tm_year = 2020;
         --tm.tm_mon;
         tm.tm_year -= 1900;
-        struct tm *check;
-        check = &tm;
+        // struct tm *check;
+        // check = &tm;
 
-        if (!validateTime(check))
+        if (!validateTime(tm))
         {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -494,7 +514,7 @@ void emptyValid(string &input)
         if (input.empty() || all_of(input.begin(), input.end(), [](char c) { return isspace(c); }))
         {
             printColor("\nError !", 12);
-            cout << " Input is empty.\n";
+            cout << " Input is empty. ";
             cout << "Please enter again : ";
             getline(cin, input);
         }
@@ -1073,7 +1093,8 @@ void addHunter(vector<Hunter> &hunter)
     SetConsoleTextAttribute(console, 11);
     cout << "--------Filling up the Hunter details--------\n";
     SetConsoleTextAttribute(console, 15);
-    getline(cin, gender);
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     cout << "First Name: ";
     getline(cin, firstName);
@@ -1094,20 +1115,20 @@ void addHunter(vector<Hunter> &hunter)
     cin >> teamType;
     teamTypeValid(teamType);
 
-    bool state = true;
     do
     {
         string input;
         SetConsoleTextAttribute(console, 14);
-        cout << "\n--Adding a Pokemon details for this hunter? (Y/N) : ";
+        cout << "\n[1] --Adding a Pokemon details for this hunter? (Y/N) : ";
         SetConsoleTextAttribute(console, 15);
 
         cin >> input;
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (input == "Y" || input == "y")
         {
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
             string name;
             string type;
             int cp;
@@ -1143,18 +1164,17 @@ void addHunter(vector<Hunter> &hunter)
         }
         else
         {
-            state = false;
+            break;
         }
 
-    } while (state);
+    } while (true);
 
-    state = true;
     do
     {
         string input;
-        getline(cin, input);
+
         SetConsoleTextAttribute(console, 14);
-        cout << "\n--Adding a Stop details for this hunter? (Y/N) : ";
+        cout << "\n[2] --Adding a Stop details for this hunter? (Y/N) : ";
         SetConsoleTextAttribute(console, 15);
         cin >> input;
 
@@ -1180,18 +1200,18 @@ void addHunter(vector<Hunter> &hunter)
         }
         else
         {
-            state = false;
+            break;
         }
 
-    } while (state);
+    } while (true);
 
-    state = true;
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do
     {
         string input;
-        getline(cin, input);
         SetConsoleTextAttribute(console, 14);
-        cout << "\n--Adding a Raid details for this hunter? (Y/N) : ";
+        cout << "\n[3] --Adding a Raid details for this hunter? (Y/N) : ";
         SetConsoleTextAttribute(console, 15);
         cin >> input;
 
@@ -1208,10 +1228,10 @@ void addHunter(vector<Hunter> &hunter)
             cout << "Raid Time (hh:mm): ";
             cin >> time;
             timeValid(time);
-
-            cout << "Raid Venue: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "Raid Venue: ";
             getline(cin, venue);
             emptyValid(venue);
 
@@ -1220,10 +1240,10 @@ void addHunter(vector<Hunter> &hunter)
         }
         else
         {
-            state = false;
+            break;
         }
 
-    } while (state);
+    } while (true);
 
     Hunter hunt = Hunter(firstName, lastName, level, gender, teamType, pokemon, pStop, pRaid);
     hunt.sortPokemon();
