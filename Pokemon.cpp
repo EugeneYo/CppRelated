@@ -1515,6 +1515,7 @@ void searchHunterLoop(vector<Hunter> hunter)
 
         cout << "Option : ";
         cin >> input4;
+        input4 = intValid(cin.fail(), input4, 1);
         cout << "\n";
 
         switch (input4)
