@@ -5,4 +5,4 @@
 
 ### Pokemon Journal
 - Created a Pokemon Journal to manage Hunters, Pokemon, Raids and Stops.
-- Updated a better version into this repo
+- Updated a better version into [this repo](https://github.com/EugeneYo/Pokemon-Journal)
